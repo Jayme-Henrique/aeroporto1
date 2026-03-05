@@ -1,65 +1,155 @@
+/* Configurações Gerais */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-color: #0f172a; /* Azul bem escuro (tech) */
+    color: #f8fafc;
     margin: 0;
-}
-
-.painel {
-    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    text-align: center;
-    width: 350px;
 }
 
-#info-voo {
-    text-align: left;
-    background: #f8f9fa;
+h1 {
+    color: #38bdf8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+/* Container dos Cards */
+.container {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Estilo Base do Card */
+.card {
+    background: #1e293b;
+    border-radius: 15px;
+    padding: 25px;
+    width: 350px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    border: 2px solid transparent;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Estilo Específico do Jato (VIP) */
+#card-jato {
+    border-color: #fbbf24; /* Dourado */
+    background: linear-gradient(145deg, #1e293b, #1e1b4b);
+}
+
+#card-jato h2 {
+    color: #fbbf24;
+}
+
+/* Estilo Específico do Cargueiro (Pesado) */
+#card-carga {
+    border-color: #f97316; /* Laranja Industrial */
+    background: linear-gradient(145deg, #1e293b, #2d1a12);
+}
+
+#card-carga h2 {
+    color: #f97316;
+}
+
+/* Textos e Informações */
+p {
+    line-height: 1.6;
+    font-size: 0.95rem;
+    background: rgba(0, 0, 0, 0.2);
     padding: 10px;
     border-radius: 8px;
-    margin-bottom: 20px;
 }
 
-.pista {
-    height: 120px;
-    border-bottom: 3px dashed #ccc;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-}
-
-#aviao {
-    transition: all 1s ease-in-out;
-    position: absolute;
-    bottom: 5px;
-    left: 10px;
-}
-
-/* Classes de Estado */
-.no-solo { color: #d9534f; font-weight: bold; }
-.em-voo { color: #5cb85c; font-weight: bold; }
-
-/* Animação de Decolagem */
-.decolando {
-    transform: translate(200px, -50px) rotate(-15deg);
+/* Área de Botões e Inputs */
+.controles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 button {
-    padding: 10px 15px;
-    margin: 5px;
     cursor: pointer;
     border: none;
-    border-radius: 5px;
-    background: #007bff;
-    color: white;
-    transition: 0.3s;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: all 0.2s;
 }
 
+/* Botões Padrão */
 button:hover {
-    background: #0056b3;
+    filter: brightness(1.2);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Botões do Jato */
+#card-jato button {
+    background-color: #4338ca;
+    color: white;
+}
+
+#card-jato button:nth-child(3), 
+#card-jato button:nth-child(4) {
+    background-color: #7c3aed; /* Roxo para Supersônico */
+}
+
+/* Botões do Cargueiro */
+#card-carga button {
+    background-color: #475569;
+    color: white;
+}
+
+#card-carga button:last-child {
+    background-color: #16a34a; /* Verde para Embarcar */
+}
+
+/* Input de Carga */
+input[type="number"] {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: white;
+    outline: none;
+}
+
+/* Log do Sistema (Terminal) */
+#console-log {
+    margin-top: 40px;
+    background-color: #000;
+    color: #10b981; /* Verde Terminal */
+    font-family: 'Courier New', Courier, monospace;
+    padding: 15px;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 5px;
+    border-left: 5px solid #10b981;
+    min-height: 25px;
+}
+
+/* Diferenciação Visual para modo Supersônico */
+.supersonico-ativo {
+    animation: pulse-red 1s infinite alternate;
+}
+
+@keyframes pulse-red {
+    from { box-shadow: 0 0 10px #ef4444; }
+    to { box-shadow: 0 0 25px #ef4444; }
 }
