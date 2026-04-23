@@ -1,44 +1,30 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Aeroporto Inteligente - Frota</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Painel de Controle do Aeroporto</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        .container { max-width: 400px; margin: auto; border: 1px solid #ccc; padding: 20px; border-radius: 10px; }
+        input { width: 100%; margin-bottom: 10px; padding: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        #avisoSistema { margin-top: 20px; font-weight: bold; text-align: center; }
+    </style>
 </head>
 <body>
-    <h1>Painel de Controle da Frota</h1>
 
-    <div class="container">
-        <!-- Card do Jato -->
-        <div class="card" id="card-jato">
-            <h2>Jato Executivo 💎</h2>
-            <p id="info-jato">Aguardando dados...</p>
-            <div class="controles">
-                <button onclick="controlarJato('decolar')">Decolar</button>
-                <button onclick="controlarJato('pousar')">Pousar</button>
-                <button onclick="controlarJato('ativar')">Ativar Supersônico</button>
-                <button onclick="controlarJato('desativar')">Desativar Supersônico</button>
-                <button onclick="controlarJato('radio')">Rádio</button>
-            </div>
-        </div>
+<div class="container">
+    <h2>🛫 Registrar Voo</h2>
+    <input type="text" id="codigo" placeholder="Código do Voo (ex: G3-100)">
+    <input type="text" id="origem" placeholder="Cidade de Origem">
+    <input type="text" id="destino" placeholder="Cidade de Destino">
+    <input type="number" id="capacidade" placeholder="Capacidade de Passageiros">
+    <button id="btnRegistrar">Registrar Voo</button>
 
-        <!-- Card do Cargueiro -->
-        <div class="card" id="card-carga">
-            <h2>Voo de Carga 📦</h2>
-            <p id="info-carga">Aguardando dados...</p>
-            <div class="controles">
-                <button onclick="controlarCarga('decolar')">Decolar</button>
-                <button onclick="controlarCarga('pousar')">Pousar</button>
-                <input type="number" id="input-carga" placeholder="Ton.">
-                <button onclick="controlarCarga('embarcar')">Embarcar Carga</button>
-                <button onclick="controlarCarga('radio')">Rádio</button>
-            </div>
-        </div>
-    </div>
+    <p id="avisoSistema"></p>
+</div>
 
-    <div id="console-log">Log do Sistema: Aguardando comandos...</div>
-
-    <script src="script.js"></script>
-    <script src="interacao.js"></script>
+<!-- O segredo: type="module" -->
+<script type="module" src="painel.js"></script>
 </body>
 </html>
