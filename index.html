@@ -2,29 +2,467 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Painel de Controle do Aeroporto</title>
+    <title>SISTEMA AEROPORTUÁRIO - DASHBOARD DE COMANDO</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
-        .container { max-width: 400px; margin: auto; border: 1px solid #ccc; padding: 20px; border-radius: 10px; }
-        input { width: 100%; margin-bottom: 10px; padding: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
-        #avisoSistema { margin-top: 20px; font-weight: bold; text-align: center; }
+        /* CSS ORGANIZADO EM GRID (ESTILO DASHBOARD) */
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #020617; /* Azul quase preto */
+            color: #f1f5f9;       
+            margin: 0;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 350px 1fr; /* Coluna lateral e conteúdo principal */
+            grid-template-rows: auto 1fr auto; /* Cabeçalho, Meio, Rodapé */
+            grid-template-areas: 
+                "header header"
+                "sidebar main"
+                "footer footer";
+            gap: 20px;
+            height: 95vh;
+        }
+
+        /* ÁREAS DO GRID */
+        header { grid-area: header; text-align: left; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; }
+        aside { grid-area: sidebar; display: flex; flex-direction: column; gap: 20px; }
+        main { grid-area: main; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        footer { grid-area: footer; }
+
+        h1 {
+            color: #38bdf8;
+            font-size: 1.8em;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ESTILO DOS CARDS TÁTICOS */
+        .card {
+            background: #1e293b;
+            border-radius: 8px; 
+            padding: 18px;         
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header {
+            border-bottom: 1px solid #334155;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 1.1em;
+            margin: 0;
+            color: #f8fafc;
+            text-transform: uppercase;
+        }
+
+        /* CORES DE STATUS */
+        .status-tag {
+            font-size: 0.7em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .info {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .info p { margin: 5px 0; color: #94a3b8; }
+        .info span { color: #38bdf8; font-weight: bold; }
+
+        /* BOTÕES ESTILO INSTRUMENTAL */
+        .controles button {
+            width: 100%;
+            padding: 10px;
+            margin: 4px 0;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px; 
+            background: #334155;
+            color: #f8fafc;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 10px;
+            transition: 0.2s;
+        }
+
+        .controles button:hover { background: #475569; border-left: 4px solid #38bdf8; }
+        
+        .btn-acao { background: #1e40af !important; } /* Azul Forte */
+        .btn-seguro { background: #059669 !important; } /* Verde Militar */
+
+        input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            background: #0f172a;
+            color: #38bdf8;
+            outline: none;
+        }
+
+        /* TERMINAL DE COMUNICAÇÃO */
+        #log-mensagens {
+            background: #020617;
+            color: #10b981;
+            padding: 15px;
+            border: 1px solid #1e3a8a;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            height: 80px;
+            overflow-y: auto;
+            border-left: 5px solid #1e40af;
+        }
+
+        /* SCROLLBAR ESTILO TECH */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>🛫 Registrar Voo</h2>
-    <input type="text" id="codigo" placeholder="Código do Voo (ex: G3-100)">
-    <input type="text" id="origem" placeholder="Cidade de Origem">
-    <input type="text" id="destino" placeholder="Cidade de Destino">
-    <input type="number" id="capacidade" placeholder="Capacidade de Passageiros">
-    <button id="btnRegistrar">Registrar Voo</button>
+    <header>
+        <h1>🛰️ CENTRO DE OPERAÇÕES AÉREAS - DASHBOARD v3.0</h1>
+    </header>
 
-    <p id="avisoSistema"></p>
-</div>
+    <aside>
+        <div class="card">
+            <div class="card-header">
+                <h2>📝 Nova Missão</h2>
+            </div>
+            <div class="controles">
+                <input type="text" id="novo-codigo" placeholder="ID DO VOO">
+                <input type="text" id="nova-origem" placeholder="ORIGEM">
+                <input type="text" id="novo-destino" placeholder="DESTINO">
+                <button id="btn-registrar" class="btn-acao">💾 SALVAR NO SISTEMA</button>
+            </div>
+        </div>
 
-<!-- O segredo: type="module" -->
-<script type="module" src="painel.js"></script>
+        <div class="card">
+            <div class="card-header">
+                <h2>📊 Relatório Operacional</h2>
+            </div>
+            <div class="info">
+                <p>Indicativo: <span id="res-codigo">---</span></p>
+                <p>Rota: <span id="res-rota">---</span></p>
+                <p>Status: <span id="res-status">AGUARDANDO...</span></p>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <h2>⚡ Unidade Jato: <span id="id-jato">---</span></h2>
+                <span class="status-tag">VIP</span>
+            </div>
+            <div class="info">
+                <p>Status: <span id="status-jato">Estacionado</span></p>
+                <p>Altitude: <span id="alt-jato">0</span> PÉS</p>
+                <p>Pós-Combustão: <span id="modo-jato">OFF</span></p>
+            </div>
+            <div class="controles">
+                <button onclick="controlarJato('decolar')">🛫 Decolagem</button>
+                <button onclick="controlarJato('pousar')">🛬 Pouso</button>
+                <button onclick="controlarJato('ativar')">🚀 Modo Supersônico</button>
+                <button onclick="controlarJato('torre')">📡 Comunicar Torre</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>📦 Unidade Carga: <span id="id-carga">---</span></h2>
+                <span class="status-tag" style="background:#475569">LOG</span>
+            </div>
+            <div class="info">
+                <p>Carga: <span id="carga-info">0</span> / <span id="cap-max">0</span> T</p>
+                <p>Integridade: <span>100%</span></p>
+            </div>
+            <div class="controles">
+                <input type="number" id="input-peso" placeholder="TONELAGEM">
+                <button onclick="controlarCarga('embarcar')">📥 Carregar</button>
+                <button onclick="controlarCarga('decolar')">🛫 Decolar</button>
+                <button onclick="controlarCarga('pousar')">🛬 Pousar</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>🛡️ Voo Seguro: <span id="id-seguro">---</span></h2>
+                <span class="status-tag" style="background:#059669">SEC</span>
+            </div>
+            <div class="info">
+                <p id="painelCombustivel">Combustível: 100%</p>
+                <p>Criptografia: <span>Ativa</span></p>
+            </div>
+            <div class="controles">
+                <button class="btn-seguro" onclick="controlarSeguro('gastar')">✈️ Iniciar Voo</button>
+                <button class="btn-seguro" onclick="controlarSeguro('abastecer')">⛽ Reabastecer</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>🕵️ Portão VIP: <span id="id-vip">CONECTADO</span></h2>
+                <span class="status-tag" style="background:#7c3aed">LGPD SECURE</span>
+            </div>
+            <div class="info">
+                <p>Passageiro: <span id="nome-vip">Carregando...</span></p>
+                <p>CPF (Protegido): <span id="cpf-vip">Carregando...</span></p>
+                <p>Lounge: <span id="lounge-vip">Carregando...</span></p>
+            </div>
+            <div class="controles">
+                <input type="text" id="input-nome-vip" placeholder="EDITAR NOME DO PASSAGEIRO">
+                <input type="text" id="input-cpf-vip" placeholder="EDITAR CPF (SENSÍVEL)">
+                <button style="background: #2563eb !important;" onclick="modificarDadosVIP()">💾 ATUALIZAR DADOS</button>
+                <button style="background: #7c3aed !important;" onclick="validarEmbarqueVIP()">🪪 VALIDAR CREDENCIAL VIP</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div id="log-mensagens">
+            <strong>📻 TRANSMISSÃO DE RÁDIO:</strong>
+            <p id="mensagem-texto">Link de dados estabelecido. Aguardando comandos... 📡</p>
+        </div>
+    </footer>
+
+    <script>
+        // CLASSES ORIGINAIS DO SISTEMA AEROPORTUÁRIO
+        class Voo {
+            constructor(codigo, origem, destino) {
+                this.codigo = codigo;
+                this.origem = origem;
+                this.destino = destino;
+                this.altitude = 0;
+                this.status = "No Hangar";
+            }
+            decolar() { 
+                this.status = "Em Voo"; 
+                this.altitude = 35000; 
+                return `[SISTEMA]: Voo ${this.codigo} em rota para ${this.destino}.`; 
+            }
+            pousar() { 
+                this.status = "Pousado"; 
+                this.altitude = 0; 
+                return `[SISTEMA]: Voo ${this.codigo} pousou com sucesso.`; 
+            }
+            comunicarTorre() { 
+                return `[RÁDIO]: Voo ${this.codigo} solicitando vetores de aproximação.`; 
+            }
+        }
+
+        class JatoExecutivo extends Voo {
+            constructor(codigo, origem, destino) {
+                super(codigo, origem, destino);
+                this.modoSupersonico = false;
+            }
+            ativarSupersonico() { 
+                this.modoSupersonico = true; 
+                this.altitude = 55000; 
+                return "[ALERTA]: Pós-combustão ativado (Mach 1.2)."; 
+            }
+            desativarSupersonico() { 
+                this.modoSupersonico = false; 
+                this.altitude = 35000; 
+                return "[SISTEMA]: Velocidade reduzida para cruzeiro."; 
+            }
+            comunicarTorre() { 
+                return `[RÁDIO]: Prioridade VIP solicitada pelo indicativo ${this.codigo}.`; 
+            }
+        }
+
+        class VooCarga extends Voo {
+            constructor(codigo, origem, destino, capacidadeMaxima) {
+                super(codigo, origem, destino);
+                this.capacidadeMaxima = capacidadeMaxima;
+                this.cargaAtual = 0;
+            }
+            embarcarCarga(toneladas) {
+                if (toneladas <= 0 || isNaN(toneladas)) return `[ERRO]: Peso inválido para embarque.`;
+                if (this.cargaAtual + toneladas <= this.capacidadeMaxima) {
+                    this.cargaAtual += toneladas;
+                    return `[LOG]: ${toneladas}t embarcadas. Total: ${this.cargaAtual}t.`;
+                } else {
+                    return `[ERRO]: Sobrecarga de peso detectada!`;
+                }
+            }
+        }
+
+        class VooSeguro {
+            #codigo;
+            #combustivel;
+            constructor(codigoPassado) {
+                this.#codigo = codigoPassado;
+                this.#combustivel = 100;
+            }
+            get lerCombustivel() { return `TANQUE: ${this.#combustivel}%`; }
+            get apenasCodigo() { return this.#codigo; }
+            set abastecer(qtd) {
+                if (this.#combustivel + qtd > 100) this.#combustivel = 100;
+                else this.#combustivel += qtd;
+                exibir("[INFO]: Reabastecimento concluído.");
+            }
+            set gastar(qtd) {
+                if (this.#combustivel - qtd < 0) this.#combustivel = 0;
+                else this.#combustivel -= qtd;
+                exibir("[INFO]: Consumo de propulsão registrado.");
+            }
+        }
+
+        // CLASSE PASSAGEIRO MODIFICADA COM SETTER SEGURO
+        class Passageiro {
+            #cpf; 
+            constructor(nome, cpfPassado) {
+                this.nome = nome;
+                this.#cpf = cpfPassado;
+            }
+            
+            // Getter para leitura
+            get lerCpf() {
+                return this.#cpf;
+            }
+
+            // NOVO: Setter para alteração segura e com validação corporativa
+            set alterarCpf(novoCpf) {
+                if (!novoCpf || novoCpf.trim().length < 11) {
+                    throw new Error("Formato de CPF inválido ou muito curto!");
+                }
+                this.#cpf = novoCpf; // Altera a propriedade privada de forma legítima
+            }
+        }
+
+        class PassageiroVIP extends Passageiro {
+            constructor(nome, cpfPassado, categoriaLounge) {
+                super(nome, cpfPassado); 
+                this.categoriaLounge = categoriaLounge; 
+            }
+            exibirCredencial() {
+                return `✈️ [EMBARQUE VIP]: ${this.nome} | CPF: ${this.lerCpf} | Lounge: ${this.categoriaLounge} ✨`;
+            }
+        }
+
+        // INSTANCIAÇÃO DOS OBJETOS
+        const meuJato = new JatoExecutivo("ALFA-01", "Base A", "Base B");
+        const meuCargueiro = new VooCarga("CARGO-88", "Term A", "Zona B", 500);
+        const meuVooSeguro = new VooSeguro("SECURE-X");
+        
+        // Instanciando o cliente base
+        const clienteVIP = new PassageiroVIP("Ana Souza", "111.222.333-44", "Diamante");
+
+        // INICIALIZAÇÃO DA TELA
+        window.onload = function() {
+            document.getElementById('id-jato').innerText = meuJato.codigo;
+            document.getElementById('id-carga').innerText = meuCargueiro.codigo;
+            document.getElementById('cap-max').innerText = meuCargueiro.capacidadeMaxima;
+            document.getElementById('id-seguro').innerText = meuVooSeguro.apenasCodigo;
+            document.getElementById('painelCombustivel').innerText = meuVooSeguro.lerCombustivel;
+            
+            atualizarInterfaceVIP();
+        };
+
+        // Função auxiliar para sincronizar a tela com os dados do objeto
+        function atualizarInterfaceVIP() {
+            document.getElementById('nome-vip').innerText = clienteVIP.nome;
+            document.getElementById('cpf-vip').innerText = clienteVIP.lerCpf;
+            document.getElementById('lounge-vip').innerText = clienteVIP.categoriaLounge;
+        }
+
+        // FUNÇÕES DE CONTROLE
+        function exibir(msg) { document.getElementById('mensagem-texto').innerText = msg; }
+
+        function controlarJato(acao) {
+            if (acao === 'decolar') exibir(meuJato.decolar());
+            if (acao === 'pousar') { meuJato.modoSupersonico = false; exibir(meuJato.pousar()); }
+            if (acao === 'ativar') exibir(meuJato.ativarSupersonico());
+            if (acao === 'torre') exibir(meuJato.comunicarTorre());
+            document.getElementById('status-jato').innerText = meuJato.status;
+            document.getElementById('alt-jato').innerText = meuJato.altitude;
+            document.getElementById('modo-jato').innerText = meuJato.modoSupersonico ? "ON" : "OFF";
+        }
+
+        function controlarCarga(acao) {
+            if (acao === 'embarcar') {
+                const peso = parseFloat(document.getElementById('input-peso').value);
+                exibir(meuCargueiro.embarcarCarga(peso));
+                document.getElementById('carga-info').innerText = meuCargueiro.cargaAtual;
+            }
+            if (acao === 'decolar') exibir(meuCargueiro.decolar());
+            if (acao === 'pousar') exibir(meuCargueiro.pousar());
+        }
+
+        function controlarSeguro(acao) {
+            if (acao === 'abastecer') meuVooSeguro.abastecer = 10;
+            if (acao === 'gastar') meuVooSeguro.gastar = 15;
+            document.getElementById('painelCombustivel').innerText = meuVooSeguro.lerCombustivel;
+        }
+
+        // NOVO: Função para capturar os inputs e aplicar as mudanças via POO seguro
+        function modificarDadosVIP() {
+            const novoNome = document.getElementById('input-nome-vip').value.trim();
+            const novoCpf = document.getElementById('input-cpf-vip').value.trim();
+
+            try {
+                // Modifica o nome (propriedade pública direta)
+                if (novoNome !== "") {
+                    clienteVIP.nome = novoNome;
+                }
+
+                // Modifica o CPF (Chama o método Setter seguro, aplicando regras de encapsulamento)
+                if (novoCpf !== "") {
+                    clienteVIP.alterarCpf = novoCpf; 
+                }
+
+                // Atualiza os textos na interface e avisa no rádio
+                atualizarInterfaceVIP();
+                exibir(`[SISTEMA]: Registro atualizado com sucesso. Nome: ${clienteVIP.nome} | CPF: Protegido.`);
+                
+                // Limpa os campos de entrada
+                document.getElementById('input-nome-vip').value = "";
+                document.getElementById('input-cpf-vip').value = "";
+
+            } catch (erro) {
+                // Caso a validação do Setter falhe, o sistema captura o erro com segurança
+                exibir(`🚨 SINAL DE ERRO: ${erro.message}`);
+            }
+        }
+
+        function validarEmbarqueVIP() {
+            try {
+                const logVIP = clienteVIP.exibirCredencial();
+                exibir(logVIP);
+            } catch (erro) {
+                exibir(`🚨 ALERTA CRÍTICO: ${erro.message}`);
+            }
+        }
+
+        // EVENTOS DO FORMULÁRIO LATERAL
+        document.getElementById('btn-registrar').addEventListener('click', function() {
+            const cod = document.getElementById('novo-codigo').value;
+            if(cod) {
+                document.getElementById('res-codigo').innerText = cod;
+                document.getElementById('res-rota').innerText = document.getElementById('nova-origem').value + " > " + document.getElementById('novo-destino').value;
+                document.getElementById('res-status').innerText = "Voo Pronto";
+                exibir(`[LOG]: Voo ${cod} inserido no plano de missão.`);
+            }
+        });
+    </script>
 </body>
 </html>
