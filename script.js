@@ -20,7 +20,6 @@ class Voo {
         return `Voo ${this.codigo} pousou com segurança.`;
     }
 
-    // Método para Polimorfismo
     comunicarTorre() {
         return `Torre, aqui é o voo ${this.codigo} solicitando instruções.`;
     }
@@ -29,14 +28,14 @@ class Voo {
 // SUBCLASSE 1: Jato Executivo (Herança)
 class JatoExecutivo extends Voo {
     constructor(codigo, origem, destino) {
-        super(codigo, origem, destino); // Chama o construtor do Voo
+        super(codigo, origem, destino); 
         this.modoSupersonico = false;
     }
 
     ativarSupersonico() {
         if (this.status === "Em Voo") {
             this.modoSupersonico = true;
-            this.altitude = 50000; // Altitude drástica
+            this.altitude = 50000; 
             return "💥 BOOM! Barreira do som quebrada. Modo Supersônico Ativado!";
         }
         return "Erro: O jato precisa estar em voo para ativar o supersônico.";
@@ -48,7 +47,6 @@ class JatoExecutivo extends Voo {
         return "Modo Supersônico Desativado. Velocidade normalizada.";
     }
 
-    // Sobrescrevendo o método (Polimorfismo)
     comunicarTorre() {
         return `Torre, voo VIP ${this.codigo} na escuta, prioridade de pouso!`;
     }
@@ -71,7 +69,6 @@ class VooCarga extends Voo {
         }
     }
 
-    // Sobrescrevendo o método (Polimorfismo)
     comunicarTorre() {
         return `Torre, cargueiro pesado ${this.codigo} se aproximando.`;
     }

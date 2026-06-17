@@ -16,7 +16,6 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* Container dos Cards */
 .container {
     display: flex;
     gap: 25px;
@@ -26,7 +25,6 @@ h1 {
     max-width: 1000px;
 }
 
-/* Estilo Base do Card */
 .card {
     background: #1e293b;
     border-radius: 15px;
@@ -41,7 +39,6 @@ h1 {
     transform: translateY(-5px);
 }
 
-/* Estilo Específico do Jato (VIP) */
 #card-jato {
     border-color: #fbbf24; /* Dourado */
     background: linear-gradient(145deg, #1e293b, #1e1b4b);
@@ -51,9 +48,8 @@ h1 {
     color: #fbbf24;
 }
 
-/* Estilo Específico do Cargueiro (Pesado) */
 #card-carga {
-    border-color: #f97316; /* Laranja Industrial */
+    border-color: #f97316; 
     background: linear-gradient(145deg, #1e293b, #2d1a12);
 }
 
@@ -61,7 +57,6 @@ h1 {
     color: #f97316;
 }
 
-/* Textos e Informações */
 p {
     line-height: 1.6;
     font-size: 0.95rem;
@@ -70,7 +65,6 @@ p {
     border-radius: 8px;
 }
 
-/* Área de Botões e Inputs */
 .controles {
     display: flex;
     flex-direction: column;
@@ -89,7 +83,6 @@ button {
     transition: all 0.2s;
 }
 
-/* Botões Padrão */
 button:hover {
     filter: brightness(1.2);
 }
@@ -98,7 +91,6 @@ button:active {
     transform: scale(0.95);
 }
 
-/* Botões do Jato */
 #card-jato button {
     background-color: #4338ca;
     color: white;
@@ -109,7 +101,6 @@ button:active {
     background-color: #7c3aed; /* Roxo para Supersônico */
 }
 
-/* Botões do Cargueiro */
 #card-carga button {
     background-color: #475569;
     color: white;
@@ -119,7 +110,6 @@ button:active {
     background-color: #16a34a; /* Verde para Embarcar */
 }
 
-/* Input de Carga */
 input[type="number"] {
     padding: 10px;
     border-radius: 6px;
@@ -129,11 +119,10 @@ input[type="number"] {
     outline: none;
 }
 
-/* Log do Sistema (Terminal) */
 #console-log {
     margin-top: 40px;
     background-color: #000;
-    color: #10b981; /* Verde Terminal */
+    color: #10b981; 
     font-family: 'Courier New', Courier, monospace;
     padding: 15px;
     width: 90%;
@@ -143,7 +132,6 @@ input[type="number"] {
     min-height: 25px;
 }
 
-/* Diferenciação Visual para modo Supersônico */
 .supersonico-ativo {
     animation: pulse-red 1s infinite alternate;
 }

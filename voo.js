@@ -1,7 +1,7 @@
 // Fase 1: Definindo a classe e exportando-a
 class Voo {
     constructor(codigo, origem, destino, capacidade) {
-        // Fase 2: Lançando erros (Throw)
+
         if (codigo === "") {
             throw new Error("Erro de Segurança: Todo voo precisa de um código.");
         }
@@ -21,5 +21,4 @@ class Voo {
     }
 }
 
-// Exportando para que outros arquivos possam usar
 export default Voo;

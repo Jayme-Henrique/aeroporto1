@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <title>SISTEMA AEROPORTUÁRIO - DASHBOARD DE COMANDO</title>
     <style>
-        /* CSS ORGANIZADO EM GRID (ESTILO DASHBOARD) */
+    
         body {
             font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: #020617; /* Azul quase preto */
+            background-color: #020617; 
             color: #f1f5f9;       
             margin: 0;
             padding: 20px;
             display: grid;
-            grid-template-columns: 350px 1fr; /* Coluna lateral e conteúdo principal */
-            grid-template-rows: auto 1fr auto; /* Cabeçalho, Meio, Rodapé */
+            grid-template-columns: 350px 1fr; 
+            grid-template-rows: auto 1fr auto; 
             grid-template-areas: 
                 "header header"
                 "sidebar main"
@@ -22,7 +22,6 @@
             height: 95vh;
         }
 
-        /* ÁREAS DO GRID */
         header { grid-area: header; text-align: left; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; }
         aside { grid-area: sidebar; display: flex; flex-direction: column; gap: 20px; }
         main { grid-area: main; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
@@ -36,7 +35,7 @@
             text-transform: uppercase;
         }
 
-        /* ESTILO DOS CARDS TÁTICOS */
+
         .card {
             background: #1e293b;
             border-radius: 8px; 
@@ -64,7 +63,6 @@
             text-transform: uppercase;
         }
 
-        /* CORES DE STATUS */
         .status-tag {
             font-size: 0.7em;
             padding: 4px 8px;
@@ -84,7 +82,6 @@
         .info p { margin: 5px 0; color: #94a3b8; }
         .info span { color: #38bdf8; font-weight: bold; }
 
-        /* BOTÕES ESTILO INSTRUMENTAL */
         .controles button {
             width: 100%;
             padding: 10px;
@@ -116,7 +113,6 @@
             outline: none;
         }
 
-        /* TERMINAL DE COMUNICAÇÃO */
         #log-mensagens {
             background: #020617;
             color: #10b981;
@@ -130,7 +126,6 @@
             border-left: 5px solid #1e40af;
         }
 
-        /* SCROLLBAR ESTILO TECH */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
@@ -245,7 +240,7 @@
     </footer>
 
     <script>
-        // CLASSES ORIGINAIS DO SISTEMA AEROPORTUÁRIO
+
         class Voo {
             constructor(codigo, origem, destino) {
                 this.codigo = codigo;
@@ -327,7 +322,6 @@
             }
         }
 
-        // CLASSE PASSAGEIRO MODIFICADA COM SETTER SEGURO
         class Passageiro {
             #cpf; 
             constructor(nome, cpfPassado) {
@@ -335,12 +329,10 @@
                 this.#cpf = cpfPassado;
             }
             
-            // Getter para leitura
             get lerCpf() {
                 return this.#cpf;
             }
 
-            // NOVO: Setter para alteração segura e com validação corporativa
             set alterarCpf(novoCpf) {
                 if (!novoCpf || novoCpf.trim().length < 11) {
                     throw new Error("Formato de CPF inválido ou muito curto!");
@@ -359,15 +351,13 @@
             }
         }
 
-        // INSTANCIAÇÃO DOS OBJETOS
         const meuJato = new JatoExecutivo("ALFA-01", "Base A", "Base B");
         const meuCargueiro = new VooCarga("CARGO-88", "Term A", "Zona B", 500);
         const meuVooSeguro = new VooSeguro("SECURE-X");
         
-        // Instanciando o cliente base
         const clienteVIP = new PassageiroVIP("Ana Souza", "111.222.333-44", "Diamante");
 
-        // INICIALIZAÇÃO DA TELA
+    
         window.onload = function() {
             document.getElementById('id-jato').innerText = meuJato.codigo;
             document.getElementById('id-carga').innerText = meuCargueiro.codigo;
@@ -378,14 +368,12 @@
             atualizarInterfaceVIP();
         };
 
-        // Função auxiliar para sincronizar a tela com os dados do objeto
         function atualizarInterfaceVIP() {
             document.getElementById('nome-vip').innerText = clienteVIP.nome;
             document.getElementById('cpf-vip').innerText = clienteVIP.lerCpf;
             document.getElementById('lounge-vip').innerText = clienteVIP.categoriaLounge;
         }
 
-        // FUNÇÕES DE CONTROLE
         function exibir(msg) { document.getElementById('mensagem-texto').innerText = msg; }
 
         function controlarJato(acao) {
@@ -414,32 +402,28 @@
             document.getElementById('painelCombustivel').innerText = meuVooSeguro.lerCombustivel;
         }
 
-        // NOVO: Função para capturar os inputs e aplicar as mudanças via POO seguro
         function modificarDadosVIP() {
             const novoNome = document.getElementById('input-nome-vip').value.trim();
             const novoCpf = document.getElementById('input-cpf-vip').value.trim();
 
             try {
-                // Modifica o nome (propriedade pública direta)
+
                 if (novoNome !== "") {
                     clienteVIP.nome = novoNome;
                 }
 
-                // Modifica o CPF (Chama o método Setter seguro, aplicando regras de encapsulamento)
                 if (novoCpf !== "") {
                     clienteVIP.alterarCpf = novoCpf; 
                 }
 
-                // Atualiza os textos na interface e avisa no rádio
                 atualizarInterfaceVIP();
                 exibir(`[SISTEMA]: Registro atualizado com sucesso. Nome: ${clienteVIP.nome} | CPF: Protegido.`);
                 
-                // Limpa os campos de entrada
                 document.getElementById('input-nome-vip').value = "";
                 document.getElementById('input-cpf-vip').value = "";
 
             } catch (erro) {
-                // Caso a validação do Setter falhe, o sistema captura o erro com segurança
+
                 exibir(`🚨 SINAL DE ERRO: ${erro.message}`);
             }
         }
@@ -453,7 +437,6 @@
             }
         }
 
-        // EVENTOS DO FORMULÁRIO LATERAL
         document.getElementById('btn-registrar').addEventListener('click', function() {
             const cod = document.getElementById('novo-codigo').value;
             if(cod) {

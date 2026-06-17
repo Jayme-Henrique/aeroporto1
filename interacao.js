@@ -3,13 +3,12 @@ const meuJato = new JatoExecutivo("VIP777", "São Paulo", "Paris");
 const meuCargueiro = new VooCarga("CARGO10", "Manaus", "Miami", 50);
 
 function atualizarTelas() {
-    // Atualiza Jato
+
     document.getElementById('info-jato').innerHTML = `
         Código: ${meuJato.codigo} | Status: ${meuJato.status}<br>
         Altitude: ${meuJato.altitude} ft | Supersônico: ${meuJato.modoSupersonico ? "SIM" : "NÃO"}
     `;
 
-    // Atualiza Cargueiro
     document.getElementById('info-carga').innerHTML = `
         Código: ${meuCargueiro.codigo} | Status: ${meuCargueiro.status}<br>
         Carga: ${meuCargueiro.cargaAtual}t / ${meuCargueiro.capacidadeMaxima}t
@@ -20,7 +19,6 @@ function log(mensagem) {
     document.getElementById('console-log').innerText = "Log: " + mensagem;
 }
 
-// Funções de Controle
 function controlarJato(acao) {
     if (acao === 'decolar') log(meuJato.decolar());
     if (acao === 'pousar') log(meuJato.pousar());
@@ -41,5 +39,4 @@ function controlarCarga(acao) {
     atualizarTelas();
 }
 
-// Inicia a tela
 atualizarTelas();

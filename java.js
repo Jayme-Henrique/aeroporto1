@@ -1,40 +1,87 @@
-// Fase 1: Importando a classe do outro arquivo
+
 import Voo from './Voo.js';
 
 const btn = document.getElementById("btnRegistrar");
 const mensagemTela = document.getElementById("avisoSistema");
 
 btn.addEventListener("click", () => {
-    // Capturando os valores dos inputs
+
     const codigo = document.getElementById("codigo").value;
     const origem = document.getElementById("origem").value;
     const destino = document.getElementById("destino").value;
     const capacidade = document.getElementById("capacidade").value;
 
-    // Fase 3: Equipe de Resgate (Try / Catch)
     try {
         console.log("Tentando cadastrar voo...");
 
-        // Tentamos criar o objeto. Se os dados forem inválidos, 
-        // a classe Voo vai "lançar" (throw) um erro.
         const novoVoo = new Voo(codigo, origem, destino, capacidade);
 
-        // Se chegar aqui, significa que não houve erro!
         mensagemTela.innerText = `✅ Sucesso: Voo ${novoVoo.codigo} registrado para ${novoVoo.destino}!`;
         mensagemTela.style.color = "green";
         
         console.table(novoVoo);
 
     } catch (erro) {
-        // Se qualquer erro ocorrer no bloco TRY, o CATCH "captura" o objeto de erro
+
         console.error("Falha no sistema de cadastro registrada.");
         
-        // Exibimos a mensagem customizada que definimos no throw lá no Voo.js
+     
         mensagemTela.innerText = "🚨 " + erro.message;
         mensagemTela.style.color = "red";
 
     } finally {
-        // Sempre executa, independente de erro ou sucesso
+    
         console.log("Processo de registro finalizado.");
     }
+
+
+    class Voo {
+    #status;
+
+    constructor(codigo, destino) {
+        this.codigo = codigo;
+        this.destino = destino;
+        this.#status = "Aguardando Leitura do Radar";
+    }
+
+    get status() {
+        return this.#status;
+    }
+
+    avaliarCondicoesClimaticas(velocidadeDoVento) {
+        if (velocidadeDoVento > 80) {
+            this.#status = "CANCELADO - Risco de Ciclone";
+        } else {
+            this.#status = "Liberado para Decolagem";
+        }
+    }
+}
+
+const dadosDaApi = [
+    { id_voo: "G3-111", cidade: "Curitiba", vento_kmh: 90 },
+    { id_voo: "LA-222", cidade: "São Paulo", vento_kmh: 40 }
+];
+
+console.log("Processando dados do Radar...");
+
+let listaDeVoos = [];
+
+for (let i = 0; i < dadosDaApi.length; i++) {
+    const dado = dadosDaApi[i];
+
+    const voo = new Voo(dado.id_voo, dado.cidade);
+
+    voo.avaliarCondicoesClimaticas(dado.vento_kmh);
+
+    listaDeVoos.push({
+        id_voo: dado.id_voo,
+        cidade: dado.cidade,
+        status: voo.status
+    });
+}
+
+for (let i = 0; i < listaDeVoos.length; i++) {
+    const voo = listaDeVoos[i];
+    console.log(`Voo ${voo.id_voo} para ${voo.cidade} | Status: ${voo.status}`);
+}
 });
