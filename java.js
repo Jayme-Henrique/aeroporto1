@@ -85,3 +85,60 @@ for (let i = 0; i < listaDeVoos.length; i++) {
     console.log(`Voo ${voo.id_voo} para ${voo.cidade} | Status: ${voo.status}`);
 }
 });
+
+class Voo {
+    constructor(codigo, destino) {
+        this.codigo = codigo;
+        this.destino = destino;
+    }
+}
+
+class RadarService {
+    async buscarVoosGlobais() {
+        console.log("Iniciando busca no satélite...");
+        
+        let resposta = await fetch("https://jsonplaceholder.typicode.com/users");
+        
+        if (!resposta.ok) {
+            throw new Error("Erro ao conectar com o servidor da API.");
+        }
+
+        let dadosJson = await resposta.json();
+        
+        let voosRicos = dadosJson.map(dado => new Voo(dado.id, dado.address.city));
+        
+        return voosRicos;
+    }
+}
+
+
+let painelDOM = document.getElementById("telaPainel") || { innerHTML: "" };
+let radar = new RadarService();
+
+async function inicializarPainel() {
+    try {
+ 
+        painelDOM.innerHTML = "Buscando dados no satélite... 📡 Por favor, aguarde.";
+        console.log("UX: Mensagem de Carregamento exibida.");
+
+        let listaPronta = await radar.buscarVoosGlobais();
+
+        let htmlVoos = `<h3>Sucesso! Temos ${listaPronta.length} voos no radar:</h3><ul>`;
+        listaPronta.forEach(voo => {
+            htmlVoos += `<li>✈️ Voo Nº ${voo.codigo} -> Destino: ${voo.destino}</li>`;
+        });
+        htmlVoos += `</ul>`;
+        
+        painelDOM.innerHTML = htmlVoos;
+
+    } catch (erro) {
+
+        console.error("Detalhes do erro:", erro.message);
+        painelDOM.innerHTML = "<b style='color: red;'>Falha de Conexão com o Satélite! ❌ Tente novamente mais tarde.</b>";
+
+    } finally {
+        console.log("Requisição finalizada. Limpando processos de loading secundários.");
+    }
+}
+
+inicializarPainel();
