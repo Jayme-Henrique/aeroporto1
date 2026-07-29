@@ -142,3 +142,25 @@ async function inicializarPainel() {
 }
 
 inicializarPainel();
+async function iniciarRadar() {
+    console.log("Conectando ao satélite global de forma segura...");
+    let painel = document.getElementById("telaPainel");
+    painel.innerHTML = "";
+
+    // Factory + Polimorfismo
+    let voosProcessados = dadosDaAPI.map(dado => {
+        if (dado.tipo === "comercial") {
+            return new VooComercial(dado.id, dado.qtd);
+        } else if (dado.tipo === "carga") {
+            return new VooCarga(dado.id, dado.qtd);
+        } else {
+            return new Voo(dado.id); // fallback
+        }
+    });
+
+    voosProcessados.forEach(voo => {
+        let div = document.createElement("div");
+        div.innerHTML = `<h3>${voo.gerarRelatorio()}</h3>`;
+        painel.appendChild(div);
+    });
+}

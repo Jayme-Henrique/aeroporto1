@@ -1,4 +1,4 @@
-// Classe Mãe (Base)
+
 class Voo {
     constructor(codigo, origem, destino) {
         this.codigo = codigo;
@@ -25,7 +25,7 @@ class Voo {
     }
 }
 
-// SUBCLASSE 1: Jato Executivo (Herança)
+
 class JatoExecutivo extends Voo {
     constructor(codigo, origem, destino) {
         super(codigo, origem, destino); 
@@ -52,7 +52,6 @@ class JatoExecutivo extends Voo {
     }
 }
 
-// SUBCLASSE 2: Voo de Carga (Herança)
 class VooCarga extends Voo {
     constructor(codigo, origem, destino, capacidadeMaxima) {
         super(codigo, origem, destino);
