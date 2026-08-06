@@ -164,3 +164,57 @@ async function iniciarRadar() {
         painel.appendChild(div);
     });
 }
+/* 
+=========================================================
+RELATÓRIO DE AUDITORIA (SERIALIZAÇÃO E RE-HIDRATAÇÃO)
+Auditores: [Seu Nome] e [Nome do Seu Dupla]
+
+1. Por que o formato JSON (JSON.stringify) não consegue salvar "métodos" (funções) de uma classe, salvando apenas os "atributos" (dados textuais)?
+R: O JSON (JavaScript Object Notation) foi projetado para ser um formato leve de troca de DADOS, não de comportamento. Como funções contêm código executável (lógica) que pode depender do ambiente da memória, o JSON as ignora intencionalmente por motivos de padronização e segurança, salvando apenas valores puros (strings, números, arrays, booleanos e objetos simples).
+
+2. O que o JavaScript perde na memória quando converte um Objeto para JSON? (Explique o que é o Prototype).
+R: Ao converter para JSON, o objeto perde a ligação com o seu "Prototype" (Protótipo). No JavaScript, o Prototype é a "planta" original da classe que armazena os métodos (como a função decolar()). Quando fazemos JSON.parse(), recebemos apenas um Objeto Literal (POJO - Plain Old JavaScript Object) desconectado da classe Voo, sem acesso à sua cadeia de protótipos.
+
+3. Defina o que é "Re-hidratar um Objeto". Como nós consertamos o código do Júnior aplicando essa técnica?
+R: "Re-hidratar" é o processo de pegar os dados crus/secos (POJO) vindos do JSON e passá-los novamente pelo construtor da Classe utilizando o operador 'new' (ou reconectando seu protótipo). Consertamos o código do Júnior pegando o 'codigo' e 'origem' do JSON recuperado, instanciando um 'new Voo()', e restaurando seus atributos (como 'status'). Com isso, o objeto voltou a ter acesso ao Prototype e ao método decolar().
+=========================================================
+*/
+
+// SISTEMA DE LOGBOOK (PERSISTÊNCIA) - CORRIGIDO
+
+class Voo {
+    constructor(codigo, origem) {
+        this.codigo = codigo;
+        this.origem = origem;
+        this.status = "No Solo";
+    }
+
+    decolar() {
+        this.status = "Em Voo";
+        console.log(`🛫 O voo ${this.codigo} acabou de decolar de ${this.origem}!`);
+    }
+}
+
+console.log("=== SALVANDO O VOO NO DISCO ===");
+
+let vooOriginal = new Voo("G3-777", "Curitiba");
+console.log("Teste antes de salvar:");
+vooOriginal.decolar(); 
+
+localStorage.setItem("meuLogbook", JSON.stringify(vooOriginal));
+console.log("Voo salvo com sucesso no LocalStorage!");
+
+
+console.log("\n=== LENDO O VOO NO DIA SEGUINTE ===");
+
+let dadosDoDisco = localStorage.getItem("meuLogbook");
+let vooRecuperado = JSON.parse(dadosDoDisco);
+
+console.log("Dados crus recuperados do disco:", vooRecuperado);
+
+let vooHidratado = new Voo(vooRecuperado.codigo, vooRecuperado.origem);
+
+vooHidratado.status = vooRecuperado.status;
+
+console.log("Tentando decolar o voo re-hidratado...");
+vooHidratado.decolar(); 
