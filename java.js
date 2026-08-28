@@ -242,3 +242,5 @@ torreSetorSul.autorizarPouso("GOL-200");
 
 console.log("\n--- TESTE DE MEMÓRIA (IGUALDADE ESTRITA) ---");
 console.log("As torres são o mesmo objeto na memória?", torreSetorNorte === torreSetorSul);
+
+
