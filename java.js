@@ -243,4 +243,59 @@ torreSetorSul.autorizarPouso("GOL-200");
 console.log("\n--- TESTE DE MEMÓRIA (IGUALDADE ESTRITA) ---");
 console.log("As torres são o mesmo objeto na memória?", torreSetorNorte === torreSetorSul);
 
+export default class AgenteIoTService {
+    constructor(frota, funcaoRenderizar) {
+        this.frota = frota;
+        this.renderizar = funcaoRenderizar;
+        this.intervaloId = null;
+    }
 
+    iniciarMonitoramentoIncorreto() {
+        console.log("Iniciando monitoramento...");
+        console.log("O código acima travou a 'Call Stack' (Pilha de Chamadas).");
+    }
+
+    iniciarMonitoramentoCorreto() {
+        if (this.intervaloId !== null) {
+            return;
+        }
+
+        this.intervaloId = setInterval(() => {
+            this.frota.forEach((voo) => {
+                if (typeof voo.tempoParaDecolagem === "number" && voo.tempoParaDecolagem > 0) {
+                    voo.tempoParaDecolagem -= 1;
+
+                    if (voo.tempoParaDecolagem === 0) {
+                        voo.status = "Decolado";
+                    }
+                } else if (voo.status !== "Decolado") {
+                    voo.status = "Atrasado";
+                }
+            });
+
+            this.renderizar();
+        }, 5000);
+
+        console.log("Agente IoT ligado. Varredura a cada 5 segundos.");
+    }
+
+    pararMonitoramento() {
+        if (this.intervaloId !== null) {
+            clearInterval(this.intervaloId);
+            this.intervaloId = null;
+            console.log("Agente IoT desligado.");
+        }
+    }
+}
+
+import AgenteIoTService from "./AgenteIoTService.js";
+
+const agente = new AgenteIoTService(frota, renderizarPainel);
+
+agente.iniciarMonitoramentoCorreto();
+
+{
+  codigo: "G3-1234",
+  status: "Programado",
+  tempoParaDecolagem: 8
+}
