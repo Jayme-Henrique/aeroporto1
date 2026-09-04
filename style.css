@@ -1,37 +1,28 @@
+/* Paleta de Cores: Azul Marinho, Cinza Espacial e Aço */
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #0f172a; /* Azul bem escuro (tech) */
-    color: #f8fafc;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: #e9ecef; /* Cinza claro de fundo */
+    color: #212529;
+    text-align: center;
     padding: 20px;
-}
-
-h1 {
-    color: #38bdf8;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 30px;
 }
 
 .container {
     display: flex;
-    gap: 25px;
-    flex-wrap: wrap;
     justify-content: center;
-    width: 100%;
-    max-width: 1000px;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 .card {
-    background: #1e293b;
-    border-radius: 15px;
-    padding: 25px;
-    width: 350px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    border: 2px solid transparent;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    width: 320px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-top: 8px solid;
     transition: transform 0.3s ease;
 }
 
@@ -39,104 +30,191 @@ h1 {
     transform: translateY(-5px);
 }
 
-#card-jato {
-    border-color: #fbbf24; /* Dourado */
-    background: linear-gradient(145deg, #1e293b, #1e1b4b);
-}
+/* Estilo VIP: Azul Marinho Profundo */
+.jato { 
+    border-color: #1b263b; 
+} 
 
-#card-jato h2 {
-    color: #fbbf24;
-}
+/* Estilo Carga: Cinza Chumbo/Industrial */
+.carga { 
+    border-color: #415a77; 
+} 
 
-#card-carga {
-    border-color: #f97316; 
-    background: linear-gradient(145deg, #1e293b, #2d1a12);
-}
-
-#card-carga h2 {
-    color: #f97316;
-}
-
-p {
-    line-height: 1.6;
-    font-size: 0.95rem;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 10px;
+.info {
+    text-align: left;
+    background: #f8f9fa;
+    padding: 15px;
     border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid #dee2e6;
 }
 
-.controles {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-button {
+.controles button {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0;
     cursor: pointer;
     border: none;
-    padding: 10px 15px;
-    border-radius: 6px;
+    border-radius: 4px;
+    background-color: #0d47a1; /* Azul corporativo */
+    color: white;
     font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    transition: all 0.2s;
+    transition: 0.3s;
 }
 
-button:hover {
-    filter: brightness(1.2);
+.controles button:hover { 
+    background-color: #1565c0; 
 }
 
-button:active {
-    transform: scale(0.95);
+/* Botão da Torre: Tom de Alerta Sóbrio (Laranja Queimado ou Azul Escuro) */
+.btn-torre { 
+    background-color: #334155 !important; /* Azul Ardosia Escuro */
 }
 
-#card-jato button {
-    background-color: #4338ca;
-    color: white;
+.btn-torre:hover {
+    background-color: #1e293b !important;
 }
 
-#card-jato button:nth-child(3), 
-#card-jato button:nth-child(4) {
-    background-color: #7c3aed; /* Roxo para Supersônico */
-}
-
-#card-carga button {
-    background-color: #475569;
-    color: white;
-}
-
-#card-carga button:last-child {
-    background-color: #16a34a; /* Verde para Embarcar */
-}
-
-input[type="number"] {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #475569;
-    background: #0f172a;
-    color: white;
-    outline: none;
-}
-
-#console-log {
-    margin-top: 40px;
-    background-color: #000;
-    color: #10b981; 
-    font-family: 'Courier New', Courier, monospace;
-    padding: 15px;
+input {
     width: 90%;
-    max-width: 800px;
-    border-radius: 5px;
-    border-left: 5px solid #10b981;
-    min-height: 25px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background-color: #fff;
 }
 
-.supersonico-ativo {
-    animation: pulse-red 1s infinite alternate;
+input:focus {
+    outline: 2px solid #0d47a1;
 }
 
-@keyframes pulse-red {
-    from { box-shadow: 0 0 10px #ef4444; }
-    to { box-shadow: 0 0 25px #ef4444; }
+/* Log de Mensagens: Estilo Terminal Moderno */
+#log-mensagens {
+    margin-top: 30px;
+    padding: 20px;
+    background: #1e293b; /* Fundo azul quase preto */
+    color: #94a3b8;    /* Texto acinzentado */
+    border-radius: 8px;
+    display: inline-block;
+    min-width: 500px;
+    font-family: 'Courier New', Courier, monospace;
+    border: 1px solid #334155;
+    text-align: left;
 }
+
+#log-mensagens span {
+    color: #38bdf8; /* Azul claro para destacar comandos */
+}
+/* ÁREAS DO GRID */
+    header { grid-area: header; text-align: left; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; }
+    aside { grid-area: sidebar; display: flex; flex-direction: column; gap: 20px; }
+    main { grid-area: main; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    footer { grid-area: footer; }
+
+    h1 {
+        color: #38bdf8;
+        font-size: 1.8em;
+        margin: 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    /* ESTILO DOS CARDS TÁTICOS */
+    .card {
+        background: #1e293b;
+        border-radius: 8px; 
+        padding: 18px;          
+        border: 1px solid #334155;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-header {
+        border-bottom: 1px solid #334155;
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header h2 {
+        font-size: 1.1em;
+        margin: 0;
+        color: #f8fafc;
+        text-transform: uppercase;
+    }
+
+    /* CORES DE STATUS */
+    .status-tag {
+        font-size: 0.7em;
+        padding: 4px 8px;
+        border-radius: 4px;
+        background: #0ea5e9;
+        color: white;
+    }
+
+    .info {
+        background: #0f172a;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-size: 0.9em;
+    }
+
+    .info p { margin: 5px 0; color: #94a3b8; }
+    .info span { color: #38bdf8; font-weight: bold; }
+
+    /* BOTÕES ESTILO INSTRUMENTAL */
+    .controles button {
+        width: 100%;
+        padding: 10px;
+        margin: 4px 0;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px; 
+        background: #334155;
+        color: #f8fafc;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 10px;
+        transition: 0.2s;
+    }
+
+    .controles button:hover { background: #475569; border-left: 4px solid #38bdf8; }
+    
+    .btn-acao { background: #1e40af !important; } /* Azul Forte */
+    .btn-seguro { background: #059669 !important; } /* Verde Militar */
+
+    input {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #334155;
+        border-radius: 4px;
+        background: #0f172a;
+        color: #38bdf8;
+        outline: none;
+    }
+
+    /* TERMINAL DE COMUNICAÇÃO */
+    #log-mensagens {
+        background: #020617;
+        color: #10b981;
+        padding: 15px;
+        border: 1px solid #1e3a8a;
+        border-radius: 8px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.85em;
+        height: 80px;
+        overflow-y: auto;
+        border-left: 5px solid #1e40af;
+    }
+
+    /* SCROLLBAR ESTILO TECH */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+</style>
